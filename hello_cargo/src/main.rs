@@ -8,20 +8,32 @@ use rand::Rng;
 
 fn main() {
     println!("Hello, world!");
-    let secret_number = rand::thread_rng().gen_range(1,100);
+    let secret_number = rand::thread_rng().gen_range(1,100); // this will genreate a random number
 
-    println!("the secret number is::{}", secret_number);
+    println!("the secret number is::{}", secret_number); // this is display the secret number
     println!("this is a guessing game");
-    let mut guess = String::new();
+    loop {
+        let mut guess = String::new();  // creating a guess var with String type
 
-    let guess:u32 = guess.trim().parser().expect("error"); 
+        io::stdin().read_line(&mut guess).expect("failed to read line"); // taking input form console
 
-    io::stdin().read_line(&mut guess).expect("failed to read line");
-    println!("guess value is ::{}", guess);
+        // let guess:u32 = guess.trim().parse().expect("error"); // creating a "shadow var" of guess variable with u32 datatype
 
-    match guess.cmp(&secret_number) {
-        Ordering::Less => println!("too small");
-        Ordering::Greater => println!("too big");
-        Ordering::Equal => println!("thats correct");
+        let guess :u32 = match guess.trim().parse() {
+            Ok(num) => num,
+            Err(_) => continue,
+        };
+
+
+        println!("guess value is ::{}", guess);
+
+        match guess.cmp(&secret_number) { // comparing both of the var 
+            Ordering::Less => println!("too small"),
+            Ordering::Greater => println!("too big"),
+            Ordering::Equal => {
+                println!("correct value ");
+                break;
+            }
+            }
     }
 }
